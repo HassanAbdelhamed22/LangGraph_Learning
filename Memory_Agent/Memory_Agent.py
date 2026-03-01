@@ -16,19 +16,22 @@ load_dotenv(ENV_PATH)
 print("GEMINI_API_KEY loaded?", bool(os.getenv("GEMINI_API_KEY")))
 print("Key prefix:", (os.getenv("GEMINI_API_KEY") or "")[:6])
 
+
 class AgentState(TypedDict):
     messages: List[Union[HumanMessage, AIMessage]]
 
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
+
 def process(state: AgentState) -> AgentState:
     response = llm.invoke(state["messages"])
     state["messages"].append(AIMessage(content=response.content))
     print(f"\nAI: {response.content}")
-    
+
     return state
-  
+
+
 graph = StateGraph(AgentState)
 
 graph.add_node("process", process)
@@ -43,9 +46,21 @@ conversation_history = []
 user_input = input("\nYou: ")
 while user_input != "exit":
     conversation_history.append(HumanMessage(content=user_input))
-    
+
     result = agent.invoke({"messages": conversation_history})
-    
+
     conversation_history = result["messages"]
-    
+
     user_input = input("\nYou: ")
+
+with open("logging.txt", "w") as file:
+    file.write("Your Conversation Log:\n")
+
+    for message in conversation_history:
+        if isinstance(message, HumanMessage):
+            file.write(f"You: {message.content}\n")
+        elif isinstance(message, AIMessage):
+            file.write(f"AI: {message.content}\n")
+    file.write("End of Conversation\n")
+
+print("Your conversation log has been saved to logging.txt.")

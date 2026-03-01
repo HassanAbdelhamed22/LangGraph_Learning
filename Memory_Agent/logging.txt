@@ -1,0 +1,10 @@
+Your Conversation Log:
+You: hi, my name is hassan
+AI: Hi Hassan, nice to meet you! I'm an AI assistant.
+
+How can I help you today?
+You: good morning
+AI: Good morning, Hassan! I hope you have a great day.
+
+How can I assist you this morning?
+You: tell me a joke
