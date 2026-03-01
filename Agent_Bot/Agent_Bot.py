@@ -1,7 +1,7 @@
 from typing import TypedDict, List
 from langgraph.graph import StateGraph, START, END
 from langchain_core.messages import HumanMessage
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 from dotenv import load_dotenv
 
@@ -13,15 +13,15 @@ print("ENV EXISTS:", os.path.exists(ENV_PATH))
 
 load_dotenv(ENV_PATH)
 
-print("OPENAI_API_KEY loaded?", bool(os.getenv("OPENAI_API_KEY")))
-print("Key prefix:", (os.getenv("OPENAI_API_KEY") or "")[:7])
+print("GEMINI_API_KEY loaded?", bool(os.getenv("GEMINI_API_KEY")))
+print("Key prefix:", (os.getenv("GEMINI_API_KEY") or "")[:6])
 
 
 class AgentState(TypedDict):
     messages: List[HumanMessage]
 
 
-llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 
 def process(state: AgentState) -> AgentState:
