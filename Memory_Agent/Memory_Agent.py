@@ -21,3 +21,19 @@ class AgentState(TypedDict):
 
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+
+def process(state: AgentState) -> AgentState:
+    response = llm.invoke(state["messages"])
+    state["messages"].append(AIMessage(content=response.content))
+    print(f"\nAI: {response.content}")
+    
+    return state
+  
+graph = StateGraph(AgentState)
+
+graph.add_node("process", process)
+
+graph.add_edge(START, "process")
+graph.add_edge("process", END)
+
+agent = graph.compile()
