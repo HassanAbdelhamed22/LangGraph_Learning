@@ -17,8 +17,7 @@ print("GEMINI_API_KEY loaded?", bool(os.getenv("GEMINI_API_KEY")))
 print("Key prefix:", (os.getenv("GEMINI_API_KEY") or "")[:6])
 
 class AgentState(TypedDict):
-    messages: List[HumanMessage]
-    messages_ai: List[AIMessage]
+    messages: List[Union[HumanMessage, AIMessage]]
 
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
